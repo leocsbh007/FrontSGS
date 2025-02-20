@@ -11,7 +11,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
         const response = await axios.post(`${API_URL}/login`, { username, email, password });
 
         localStorage.setItem("apiToken", response.data.token); // Armazena o token
-        window.location.href = "dashboard.html"; // Redireciona para a área protegida
+        window.location.href = "index.html"; // Redireciona para a área protegida
     } catch (error) {
         document.getElementById("message").textContent = "Erro: " + (error.response?.data?.detail || "Erro ao conectar");
     }

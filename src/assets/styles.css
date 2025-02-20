@@ -1,41 +1,68 @@
+/* Estilos básicos para o layout */
 body {
     font-family: Arial, sans-serif;
-    text-align: center;
-    background: #f4f4f4;
-    padding: 50px;
+    margin: 0;
+    padding: 0;
 }
 
-form {
-    background: white;
-    padding: 20px;
-    width: 300px;
-    margin: auto;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-
-input, button {
-    width: 80%;
-    margin: 10px 0;
+.navbar {
+    background-color: #1e1e1e;
+    color: white;
     padding: 10px;
 }
 
+.navbar a {
+    margin: 10px;
+    color: white;
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    background-color: #575757;
+    padding: 5px;
+}
+
+.content {
+    padding: 20px;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+}
+
+input {
+    margin: 10px;
+    padding: 10px;
+    width: 200px;
+    border: 1px solid #ccc;
+}
+
 button {
-    background: #007bff;
+    padding: 10px 20px;
+    background-color: #007bff;
     color: white;
     border: none;
     cursor: pointer;
 }
 
 button:hover {
-    background: #0056b3;
+    background-color: #0056b3;
 }
 
-#logout {
-    background: red;
+/* Adicionando um estilo para o botão de logout */
+#logout-btn {
+    margin-left: 20px;
+    padding: 10px 20px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    cursor: pointer;
 }
 
-#logout:hover {
-    background: darkred;
+#logout-btn:hover {
+    background-color: #c82333;
 }
