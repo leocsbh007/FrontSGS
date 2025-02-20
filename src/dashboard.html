@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área Protegida</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script defer src="js/dashboard.js"></script>
+</head>
+<body>
+
+    <h2>Bem-vindo à Área Protegida</h2>
+    <form id="updateForm">
+        <input type="text" id="username" placeholder="Novo Usuário">        
+        <input type="email" id="email" placeholder="Novo Email">
+        <input type="password" id="password" placeholder="Nova Senha" required>
+        <button type="submit">Atualizar Dados</button>
+    </form>
+
+    
+    <button id="logout">Sair</button>
+    <p id="status"></p>
+
+</body>
+</html>
