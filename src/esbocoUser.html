@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Usuários</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f8f8f8;
+        }
+        .container {
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: auto;
+        }
+        input, button {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .actions {
+            text-align: center;
+        }
+        .edit, .delete {
+            cursor: pointer;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>USUÁRIOS</h2>
+        <input type="text" id="name" placeholder="Nome">
+        <input type="email" id="email" placeholder="E-mail">
+        <input type="text" id="role" placeholder="Role">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="addUser()">SALVAR</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="userTable">
+                <tr>
+                    <td>admin</td>
+                    <td>admin@teste.com</td>
+                    <td>Admin</td>
+                    <td class="actions">
+                        ✏️ | 🗑️
+                    </td>
+                </tr>
+                <tr>
+                    <td>gerente</td>
+                    <td>gerente@teste.com</td>
+                    <td>Manager</td>
+                    <td class="actions">
+                        ✏️ | 🗑️
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        function addUser() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const role = document.getElementById('role').value;
+            
+            if (!name || !email || !role) {
+                alert("Preencha todos os campos!");
+                return;
+            }
+            
+            const table = document.getElementById('userTable');
+            const row = table.insertRow();
+            row.innerHTML = `<td>${name}</td><td>${email}</td><td>${role}</td>
+                            <td class='actions'>✏️ | 🗑️</td>`;
+        }
+    </script>
+</body>
+</html>

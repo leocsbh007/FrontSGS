@@ -1,4 +1,4 @@
-/* Estilos básicos para o layout */
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -6,6 +6,10 @@ body {
 }
 
 .navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
     background-color: #1e1e1e;
     color: white;
     padding: 10px;
@@ -22,39 +26,8 @@ body {
     padding: 5px;
 }
 
-.content {
-    padding: 20px;
-}
-
-.login-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: 50px;
-}
-
-input {
-    margin: 10px;
-    padding: 10px;
-    width: 200px;
-    border: 1px solid #ccc;
-}
-
-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-/* Adicionando um estilo para o botão de logout */
-#logout-btn {
+.navbar button{
+    width: 5%;
     margin-left: 20px;
     padding: 10px 20px;
     background-color: #dc3545;
@@ -63,6 +36,52 @@ button:hover {
     cursor: pointer;
 }
 
-#logout-btn:hover {
+.navbar button:hover {
     background-color: #c82333;
 }
+
+
+.content {
+    padding: 20px;
+}
+
+
+form {
+    background: white;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    margin-top: 200px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;    
+}
+
+form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+
+input, button {
+    width: 80%;
+    margin: 10px 0;
+    padding: 10px;
+}
+
+button {
+    background: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+
+
