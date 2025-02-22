@@ -29,27 +29,35 @@ function getUsers() {
     })
     .then(response => {
         const dadosUsers = response.data; // Array de usuários
-        const contentUsers = document.getElementById("user-list")       
-        console.log("Dados:", dadosUsers);
-        console.log("Elemento:", contentUsers);
-
-
-        if (!contentUsers) {
-            console.error("Erro: Elemento #content não encontrado no DOM!");
+        const contentUsers = document.getElementById("user-list");       
+        const table = document.getElementById('userTable');
+        
+        if (!table) {
+            console.error("Erro: Elemento #Table não encontrado no DOM!");
             return;
         }
-        contentUsers.innerHTML = ""; // Evita duplicação ao chamar a função várias vezes
-
+    
+        // Limpa o conteúdo da tabela antes de inserir novos dados
+        table.innerHTML = ""; 
+    
+        // Itera sobre os dados dos usuários e cria uma linha para cada um
         dadosUsers.forEach(infoUser => {
-            const estruturaHtmlUsers = `                         
-                <div class="details">
-                    <h2>ID Usuario: ${infoUser.id}</h2>
-                    <h2>NOME USUARIO: ${infoUser.username}</h2>
-                    <h2>EMAIL USUARIO: ${infoUser.email}</h2>
-                </div>            
-            `
-            contentUsers.innerHTML += estruturaHtmlUsers;
+            const row = table.insertRow(); // Cria uma nova linha para cada usuário
+    
+            // Preenche a linha com os dados do usuário
+            const estruturaHtmlUsers = `  
+                <td>${infoUser.username}</td>
+                <td>${infoUser.email}</td>
+                <td>${infoUser.role}</td>
+                <td class='actions'>
+                    <button onclick="editUser(${infoUser.id}, '${infoUser.username}', '${infoUser.email}', '${infoUser.role}')">✏️</button> | 
+                    <button onclick="deleteUser(${infoUser.id})">🗑️</button>
+                </td>
+            `;
+            
+            row.innerHTML = estruturaHtmlUsers; // Preenche a linha com o HTML
         });
+    
         console.log("Usuários:", response.data);
     })
     .catch(error => {
@@ -59,9 +67,93 @@ function getUsers() {
     
 }
 
+// Função para adicionar um novo usuário (POST)
+function addUser() {
+    const token = localStorage.getItem("apiToken");
+    
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const role = document.getElementById("role").value;
+    const password = document.getElementById("password").value;
+
+    if (!name || !email || !role || !password) {
+        alert("Por favor, preencha todos os campos.");
+        return;
+    }
+
+    axios.post("http://localhost:8000/users", {
+        username: name,
+        email: email,
+        role: role,
+        password: password
+    }, {
+        headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(response => {
+        console.log("Usuário adicionado:", response.data);
+        getUsers(); // Atualiza a lista de usuários
+        clearInputs(); // Limpa os campos de entrada
+    })
+    .catch(error => {
+        console.error("Erro ao adicionar usuário:", error);
+    });
+}
+
+// Função para editar usuário (PUT)
+function editUser(userId, currentUsername, currentEmail, currentRole) {
+    const token = localStorage.getItem("apiToken");
+
+    const newUsername = prompt("Novo Nome de Usuário:", currentUsername);
+    const newEmail = prompt("Novo E-mail:", currentEmail);
+    const newRole = prompt("Novo Cargo:", currentRole);
+
+    if (newUsername && newEmail && newRole) {
+        axios.put(`http://localhost:8000/users/${userId}`, {
+            username: newUsername,
+            email: newEmail,
+            role: newRole
+        }, {
+            headers: { Authorization: `Bearer ${token}` }
+        })
+        .then(response => {
+            console.log("Usuário atualizado:", response.data);
+            getUsers(); // Atualiza a lista de usuários
+        })
+        .catch(error => {
+            console.error("Erro ao atualizar usuário:", error);
+        });
+    }
+}
+
+// Função para deletar usuário (DELETE)
+function deleteUser(userId) {
+    const token = localStorage.getItem("apiToken");
+
+    axios.delete(`http://localhost:8000/users/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(response => {
+        console.log("Usuário deletado:", response.data);
+        getUsers(); // Atualiza a lista de usuários após a exclusão
+    })
+    .catch(error => {
+        console.error("Erro ao deletar usuário:", error);
+    });
+}
+
+// Função para limpar os campos de entrada
+function clearInputs() {
+    document.getElementById("name").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("role").value = "";
+    document.getElementById("password").value = "";
+}
+
 // Chama a função de usuários se estivermos na página de usuários
 if (window.location.pathname.includes("users.html")) {
     getUsers();    
 }
+
+
 
 
