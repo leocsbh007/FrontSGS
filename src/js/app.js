@@ -28,8 +28,7 @@ function getUsers() {
         headers: { Authorization: `Bearer ${token}` }        
     })
     .then(response => {
-        const dadosUsers = response.data; // Array de usuários
-        const contentUsers = document.getElementById("user-list");       
+        const dadosUsers = response.data; // Array de usuários        
         const table = document.getElementById('userTable');
         
         if (!table) {
@@ -37,6 +36,7 @@ function getUsers() {
             return;
         }
     
+        console.log("Usuários:", response.data);
         // Limpa o conteúdo da tabela antes de inserir novos dados
         table.innerHTML = ""; 
     
@@ -50,8 +50,8 @@ function getUsers() {
                 <td>${infoUser.email}</td>
                 <td>${infoUser.role}</td>
                 <td class='actions'>
-                    <button onclick="editUser(${infoUser.id}, '${infoUser.username}', '${infoUser.email}', '${infoUser.role}')">✏️</button> | 
-                    <button onclick="deleteUser(${infoUser.id})">🗑️</button>
+                    <button onclick="editUser(${infoUser.id}, '${infoUser.username}', '${infoUser.email}', '${infoUser.role}')">Editar</button>
+                    <button onclick="deleteUser(${infoUser.id})">Deletar</button>
                 </td>
             `;
             
@@ -103,24 +103,37 @@ function addUser() {
 function editUser(userId, currentUsername, currentEmail, currentRole) {
     const token = localStorage.getItem("apiToken");
 
-    const newUsername = prompt("Novo Nome de Usuário:", currentUsername);
-    const newEmail = prompt("Novo E-mail:", currentEmail);
-    const newRole = prompt("Novo Cargo:", currentRole);
+    const newUsername = prompt("Novo Nome de Usuário:", currentUsername) || currentUsername;
+    const newEmail = prompt("Novo E-mail:", currentEmail) || currentEmail;
+    const newRole = prompt("Novo Cargo:", currentRole) || currentRole;
+
+    const validRoles = ["ADMIN", "FUNCIONARIO", "GERENTE", "ADMIN_SEGURANCA"];
+    if (!validRoles.includes(newRole)) {
+        alert(`Cargo inválido. Escolha entre: ${validRoles.join(", ")}`);
+        return;
+    }
 
     if (newUsername && newEmail && newRole) {
         axios.put(`http://localhost:8000/users/${userId}`, {
             username: newUsername,
             email: newEmail,
+            password: null,
             role: newRole
         }, {
             headers: { Authorization: `Bearer ${token}` }
         })
         .then(response => {
             console.log("Usuário atualizado:", response.data);
+            alert("Usuário atualizado com sucesso!");
             getUsers(); // Atualiza a lista de usuários
         })
-        .catch(error => {
+        .catch(error => {            
             console.error("Erro ao atualizar usuário:", error);
+            if(error.response){
+                alert(`Erro: ${error.response.data.detail}`);
+            } else {
+                alert("Erro ao conectar ao Servidor.");
+            }
         });
     }
 }

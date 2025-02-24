@@ -52,14 +52,21 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin: auto;
 }
-input, button {
-    width: 100%;
+
+input {
+    width: 97%;
     padding: 8px;
     margin: 5px 0;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+
 button {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     background-color: #007BFF;
     color: white;
     border: none;
