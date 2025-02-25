@@ -103,23 +103,48 @@ function addUser() {
 function editUser(userId, currentUsername, currentEmail, currentRole) {
     const token = localStorage.getItem("apiToken");
 
+    // Prompt para coletar os novos dados do usuário
     const newUsername = prompt("Novo Nome de Usuário:", currentUsername) || currentUsername;
     const newEmail = prompt("Novo E-mail:", currentEmail) || currentEmail;
     const newRole = prompt("Novo Cargo:", currentRole) || currentRole;
 
+    // Validação de cargo
     const validRoles = ["ADMIN", "FUNCIONARIO", "GERENTE", "ADMIN_SEGURANCA"];
     if (!validRoles.includes(newRole)) {
         alert(`Cargo inválido. Escolha entre: ${validRoles.join(", ")}`);
         return;
     }
 
+    // Validação de formato de e-mail
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if (!emailRegex.test(newEmail)) {
+        alert("Por favor, insira um e-mail válido.");
+        return;
+    }
+
+    // Validando se os campos necessários foram preenchidos
     if (newUsername && newEmail && newRole) {
-        axios.put(`http://localhost:8000/users/${userId}`, {
+        // Inicializa o objeto de dados com os campos obrigatórios
+        let data = {
             username: newUsername,
             email: newEmail,
-            password: null,
-            role: newRole
-        }, {
+            role: newRole,
+            password: ""  // Enviar uma string vazia se a senha não for atualizada
+        };
+
+        // Pergunta ao usuário se ele quer atualizar a senha
+        if (confirm("Deseja atualizar a senha?")) {
+            const newPassword = prompt("Digite a nova senha:");
+            if (newPassword && newPassword.length >= 4) {
+                data.password = newPassword; // Adiciona a nova senha ao objeto de dados
+            } else {
+                alert("A senha deve ter no mínimo 4 caracteres.");
+                return;
+            }
+        }
+
+        // Enviando a requisição PUT com Axios
+        axios.put(`http://localhost:8000/users/${userId}`, data, {
             headers: { Authorization: `Bearer ${token}` }
         })
         .then(response => {
@@ -127,16 +152,20 @@ function editUser(userId, currentUsername, currentEmail, currentRole) {
             alert("Usuário atualizado com sucesso!");
             getUsers(); // Atualiza a lista de usuários
         })
-        .catch(error => {            
+        .catch(error => {
             console.error("Erro ao atualizar usuário:", error);
-            if(error.response){
+            if (error.response) {
                 alert(`Erro: ${error.response.data.detail}`);
             } else {
                 alert("Erro ao conectar ao Servidor.");
             }
         });
+    } else {
+        alert("Por favor, preencha todos os campos.");
     }
 }
+
+
 
 // Função para deletar usuário (DELETE)
 function deleteUser(userId) {
