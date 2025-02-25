@@ -72,7 +72,7 @@ function addUser() {
     
     const name = document.getElementById("name").value;
     const email = document.getElementById("email").value;
-    const role = document.getElementById("role").value;
+    let role = document.getElementById("role").value;
     const password = document.getElementById("password").value;
 
    
@@ -82,6 +82,7 @@ function addUser() {
         return;
     }
 
+    role = role.toUpperCase(); // Converte o cargo para maiúsculas
     // Validação de cargo
     const validRoles = ["ADMIN", "FUNCIONARIO", "GERENTE", "ADMIN_SEGURANCA"];
     if (!validRoles.includes(role)) {
@@ -109,8 +110,19 @@ function addUser() {
         getUsers(); // Atualiza a lista de usuários
         clearInputs(); // Limpa os campos de entrada
     })
-    .catch(error => {
-        console.error("Erro ao adicionar usuário:", error);
+    .catch(error => {        
+        if (error.response) {
+            console.log("Erro de Validação:", error.response.data);
+            alert(`Erro: ${error.response.data.detail}`);
+        } 
+        else if (error.request) {
+            console.log("Erro de Requisição:", error.request);
+            alert("Erro ao conectar ao Servidor.");
+        }
+        else {
+            console.log("Erro de Servidor:", error.message);
+            alert("Erro ao conectar ao Servidor.");
+        }
     });
 }
 
@@ -121,8 +133,9 @@ function editUser(userId, currentUsername, currentEmail, currentRole) {
     // Prompt para coletar os novos dados do usuário
     const newUsername = prompt("Novo Nome de Usuário:", currentUsername) || currentUsername;
     const newEmail = prompt("Novo E-mail:", currentEmail) || currentEmail;
-    const newRole = prompt("Novo Cargo:", currentRole) || currentRole;
+    let newRole = prompt("Novo Cargo:", currentRole) || currentRole;
 
+    newRole = newRole.toUpperCase(); // Converte o cargo para maiúsculas
     // Validação de cargo
     const validRoles = ["ADMIN", "FUNCIONARIO", "GERENTE", "ADMIN_SEGURANCA"];
     if (!validRoles.includes(newRole)) {
@@ -147,20 +160,22 @@ function editUser(userId, currentUsername, currentEmail, currentRole) {
             password: ""  // Enviar uma string vazia se a senha não for atualizada
         };
 
-        // Pergunta ao usuário se ele quer atualizar a senha
-        if (confirm("Deseja atualizar a senha?")) {
-            const newPassword = prompt("Digite a nova senha:");
-            if (newPassword && newPassword.length >= 4) {
-                data.password = newPassword; // Adiciona a nova senha ao objeto de dados
-            } else {
-                alert("A senha deve ter no mínimo 4 caracteres.");
-                return;
-            }
-        }
+        
+        // Atualiza a senha 
+        const newPassword = prompt("Digite a nova senha:");
+        if (newPassword && newPassword.length >= 4) {
+            data.password = newPassword; // Adiciona a nova senha ao objeto de dados
+        } else {
+            alert("A senha deve ter no mínimo 4 caracteres.");                
+            return;
+        }       
+        
 
         // Enviando a requisição PUT com Axios
         axios.put(`http://localhost:8000/users/${userId}`, data, {
-            headers: { Authorization: `Bearer ${token}` }
+            headers: { 
+                Authorization: `Bearer ${token}` 
+            }
         })
         .then(response => {
             console.log("Usuário atualizado:", response.data);
@@ -170,6 +185,7 @@ function editUser(userId, currentUsername, currentEmail, currentRole) {
         .catch(error => {
             console.error("Erro ao atualizar usuário:", error);
             if (error.response) {
+                console.log("Erro de Validção:", error.response.data);
                 alert(`Erro: ${error.response.data.detail}`);
             } else {
                 alert("Erro ao conectar ao Servidor.");
