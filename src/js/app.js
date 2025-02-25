@@ -36,7 +36,7 @@ function getUsers() {
             return;
         }
     
-        console.log("Usuários:", response.data);
+        // console.log("Usuários:", response.data);
         // Limpa o conteúdo da tabela antes de inserir novos dados
         table.innerHTML = ""; 
     
@@ -57,8 +57,7 @@ function getUsers() {
             
             row.innerHTML = estruturaHtmlUsers; // Preenche a linha com o HTML
         });
-    
-        console.log("Usuários:", response.data);
+
     })
     .catch(error => {
         console.error("Erro ao carregar usuários:", error);
@@ -76,8 +75,24 @@ function addUser() {
     const role = document.getElementById("role").value;
     const password = document.getElementById("password").value;
 
+   
+
     if (!name || !email || !role || !password) {
         alert("Por favor, preencha todos os campos.");
+        return;
+    }
+
+    // Validação de cargo
+    const validRoles = ["ADMIN", "FUNCIONARIO", "GERENTE", "ADMIN_SEGURANCA"];
+    if (!validRoles.includes(role)) {
+        alert(`Cargo inválido. Escolha entre: ${validRoles.join(", ")}`);
+        return;
+    }
+
+    // Validação de formato de e-mail
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if (!emailRegex.test(email)) {
+        alert("Por favor, insira um e-mail válido.");
         return;
     }
 
