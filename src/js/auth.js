@@ -10,8 +10,20 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
     try {
         const response = await axios.post(`${API_URL}/login`, { username, email, password });
 
-        localStorage.setItem("apiToken", response.data.token); // Armazena o token
-        window.location.href = "dashboard.html"; // Redireciona para a área protegida
+        // console.log("Resposta da API:", response.data);
+
+        if (response.data.access_token){
+            localStorage.setItem("apiToken", response.data.access_token); // Armazena o token no localStorage
+            // console.log("Token Salvo:", localStorage.getItem('apiToken')); // Substitua 'token' pelo nome correto do item no localStorage
+            window.location.href = "index.html"; // Redireciona para a área protegida
+        }
+        else{
+            console.error("Nenhum token foi retornado pela API");
+            document.getElementById("message").textContent = "Erro: Nenhum token foi retornado pela API.";
+        }
+        
+        
+        
     } catch (error) {
         document.getElementById("message").textContent = "Erro: " + (error.response?.data?.detail || "Erro ao conectar");
     }
