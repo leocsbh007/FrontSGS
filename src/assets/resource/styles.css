@@ -10,7 +10,7 @@ body {
 }
 .sidebar {
     width: 200px;
-    background: #2c3e50;
+    background-color: #1e1e1e;
     color: white;
     padding: 20px;
     height: 100vh;
@@ -51,32 +51,72 @@ th, td {
     padding: 10px;
     text-align: left;
 }
+/* Fundo escurecido ao redor do modal */
 .modal {
     display: none;
     position: fixed;
-    top: 0;
+    z-index: 1000;
     left: 0;
+    top: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
     justify-content: center;
     align-items: center;
 }
+
+/* Conteúdo do modal */
 .modal-content {
     background: white;
     padding: 20px;
-    border-radius: 5px;
-    width: 300px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: left;
 }
+
+/* Botão de fechar */
 .close {
-    float: right;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
     cursor: pointer;
 }
-button {
-    padding: 10px;
-    background: #27ae60;
-    color: white;
-    border: none;
-    cursor: pointer;
+
+/* Estilização do formulário */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Campos de entrada */
+input, select, textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
     border-radius: 5px;
+    font-size: 16px;
 }
+
+/* Botão de salvar */
+button {
+    background-color: #d9534f;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #c9302c;
+}
+
+

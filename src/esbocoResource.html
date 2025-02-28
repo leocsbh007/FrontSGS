@@ -7,13 +7,17 @@
     <link rel="stylesheet" href="assets/resource/styles.css">
 </head>
 <body>
+
     <div class="container">
         <aside class="sidebar">
             <h2>Admin</h2>
             <nav>
                 <ul>
-                    <li><a href="#">Recursos</a></li>
-                    <li><a href="#">Empréstimos</a></li>
+                    <li><a href="users.html">Usuários</a></li>
+                    <li><a href="esbocoResource.html">Recursos</a></li>
+                    <li><a href="loans.html">Empréstimos</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>                    
+                    <button id="logout-btn">Sair</button>
                 </ul>
             </nav>
         </aside>
@@ -27,6 +31,7 @@
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Patrimonio</th>
                             <th>Nome</th>
                             <th>Tipo</th>
                             <th>Status</th>
@@ -49,26 +54,30 @@
             <form id="resourceForm">
                 <label for="name">Nome:</label>
                 <input type="text" id="name" required>
-                
+
+                <label for="name">Patrimônio:</label>
+                <input type="text" id="asset_number" required>
+                <br>
+
                 <label for="type">Tipo:</label>
                 <select id="type" required>
-                    <option value="EQUIPAMENTO">Equipamento</option>
-                    <option value="VEICULO">Veículo</option>
-                    <option value="SEGURANCA">Dispositivo de Segurança</option>
+                    <option value="EQUIPAMENTO">EQUIPAMENTO</option>
+                    <option value="VEICULO">VEÍCULO</option>
+                    <option value="DISPOSITIVO_SEGURANCA">DISPOSITIVO DE SEGURANCA</option>
                 </select>
                 
                 <label for="status">Status:</label>
                 <select id="status" required>
-                    <option value="DISPONIVEL">Disponível</option>
-                    <option value="EM_USO">Em Uso</option>
-                    <option value="MANUTENCAO">Em Manutenção</option>
+                    <option value="DISPONIVEL">DISPONÍVEL</option>
+                    <option value="EM_USO">EM USO</option>
+                    <option value="MANUTENCAO">EM MANUTENCAO</option>
                 </select>
                 
                 <button type="submit">Salvar</button>
             </form>
         </div>
     </div>
-    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="js/resource/script.js"></script>
 </body>
 </html>

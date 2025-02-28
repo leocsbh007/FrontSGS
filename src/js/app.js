@@ -73,9 +73,7 @@ function addUser() {
     const name = document.getElementById("name").value;
     const email = document.getElementById("email").value;
     let role = document.getElementById("role").value;
-    const password = document.getElementById("password").value;
-
-   
+    const password = document.getElementById("password").value;   
 
     if (!name || !email || !role || !password) {
         alert("Por favor, preencha todos os campos.");
