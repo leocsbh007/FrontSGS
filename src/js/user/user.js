@@ -1,13 +1,10 @@
 const modal = document.getElementById("userModal");
 const addUserBtn = document.getElementById("addUserBtn");
 const closeModal = document.querySelector(".close");
-const form = document.getElementById("userForm");
+const userform = document.getElementById("userForm");
 const tableBody = document.getElementById("userTable");
 
 let userIdToEdit = null; // Variável para armazenar o ID do usuário que será editado
-
-const API_URL = "http://localhost:8000"; // URL da API
-
 
 function checkoutAuth() {
     const token = localStorage.getItem("apiToken");
@@ -60,7 +57,7 @@ function getUsers() {
 }
 
 // Função para adicionar ou editar um usuário
-form.addEventListener("submit", function(event) {
+userform.addEventListener("submit", function(event) {
     event.preventDefault();
 
     const token = localStorage.getItem("apiToken");
@@ -161,7 +158,8 @@ addUserBtn.addEventListener("click", () => {
 // Fechar o modal
 closeModal.addEventListener("click", () => modal.style.display = "none");
 
+if (window.location.pathname.includes("users.html")) {
+    getUsers();
+}
 
 
-// Carregar usuários quando a página for carregada
-getUsers();
