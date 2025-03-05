@@ -3,43 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUD Usuários</title>
-    <link rel="stylesheet" href="./assets/users/styles.css">
+    <title>Gerenciamento de Usuários</title>
+    <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
-    <div class="navbar">
-        <a href="users.html" id="nav-users">Usuários</a>
-        <a href="resources.html" id="nav-resources">Recursos</a>
-        <a href="loans.html" id="nav-loans">Empréstimos</a>
-        <a href="dashboard.html" id="nav-dashboard">Dashboard</a>
-        <button id="logout-btn">Sair</button>
-    </div>
+
     <div class="container">
-        <h2>USUÁRIOS</h2>
-        <input type="text" id="name" placeholder="Nome">
-        <input type="email" id="email" placeholder="E-mail">
-        <input type="text" id="role" placeholder="Role">
-        <input type="password" id="password" placeholder="Password">
-        <button onclick="addUser()">SALVAR</button>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody id="userTable">
-               
-            </tbody>
-        </table>
+        <aside class="sidebar">
+            <h2>MENU</h2>
+            <nav>
+                <ul>
+                    <li><a href="users.html">Usuários</a></li>
+                    <li><a href="resources.html">Recursos</a></li>
+                    <li><a href="loans.html">Empréstimos</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>                    
+                    <li><button id="logout-btn">Sair</button></li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <main class="content">
+            <header>                
+                <h1>Gerenciar Usuários</h1>
+                <button id="addUserBtn">+ Adicionar Usuário</button>
+            </header>
+            
+            <section>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Cargo</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTable">
+                        <!-- Dados dos usuários serão inseridos aqui -->
+                    </tbody>
+                </table>
+            </section>
+        </main>
     </div>
 
+    <!-- Modal de Adicionar/Editar Usuário -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalTitle">Adicionar Usuário</h2>
+            <form id="userForm">
+                <label for="name">Nome de Usuário:</label>
+                <input type="text" id="name" required>
+
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" required>
+
+                <label for="role">Cargo:</label>
+                <select id="role" required>
+                    <option value="ADMIN">ADMIN</option>
+                    <option value="FUNCIONARIO">FUNCIONÁRIO</option>
+                    <option value="GERENTE">GERENTE</option>
+                    <option value="ADMIN_SEGURANCA">ADMIN SEGURANÇA</option>
+                </select>
+
+                <label for="password">Senha:</label>
+                <input type="password" id="password" required>
+
+                <button type="submit">Salvar</button>
+            </form>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="js/app.js"></script>
-    
-        
+    <script src="js/user/user.js"></script>
+
 </body>
 </html>
