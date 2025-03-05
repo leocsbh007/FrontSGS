@@ -1,26 +1,90 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Gerenciamento de Recursos</title>
     <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
-    <div class="navbar">
-        <a href="users.html">Usuários</a>
-        <a href="resources.html">Recursos</a>
-        <a href="loans.html">Empréstimos</a>
-        <a href="dashboard.html">Dashboard</a>
-        <button id="logout-btn">Sair</button> <!-- Botão de logout -->
-    </div>
 
-    <div class="content">
-        <h1>Bem-vindo aos Recursos</h1>
-        <p>Conteúdo do resources.</p>
+    <div class="container">
+        <aside class="sidebar">
+            <h2>MENU</h2>
+            <nav>
+                <ul>
+                    <li><a href="users.html">Usuários</a></li>
+                    <li><a href="resources.html">Recursos</a></li>
+                    <li><a href="loans.html">Empréstimos</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>                    
+                    <li><button id="logout-btn">Sair</button></li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="content">
+            <header>
+                <h1>Gerenciar Recursos</h1>
+                <button id="addResourceBtn">+ Adicionar Recurso</button>
+            </header>
+            <section>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Patrimonio</th>
+                            <th>Nome</th>
+                            <th>Tipo</th>
+                            <th>Descrição</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resourceTableBody">
+                        <!-- Dados virão aqui -->
+                    </tbody>
+                </table>
+            </section>
+        </main>
     </div>
+    
+    <!-- Modal de Adicionar/Editar Recurso -->
+    <div id="resourceModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Adicionar Recurso</h2>
+            <form id="resourceForm">
+                <label for="name">Nome:</label>
+                <input type="text" id="name" required>
 
+                <label for="name">Patrimônio:</label>
+                <input type="text" id="asset_number" required>
+                
+
+                <label for="type">Tipo:</label>
+                <select id="type" required>
+                    <option value="EQUIPAMENTO">EQUIPAMENTO</option>
+                    <option value="VEICULO">VEÍCULO</option>
+                    <option value="DISPOSITIVO_SEGURANCA">DISPOSITIVO DE SEGURANCA</option>
+                </select>                
+                
+                <label for="status">Status:</label>
+                <select id="status" required>
+                    <option value="DISPONIVEL">DISPONÍVEL</option>
+                    <option value="EM_USO">EM USO</option>
+                    <option value="MANUTENCAO">EM MANUTENCAO</option>
+                </select>
+
+                           
+                <label for="description">Descrição:</label>
+                <br>
+                <textarea id="description" name="description" rows="4" cols="30"></textarea>
+                
+                
+                <button type="submit">Salvar</button>
+            </form>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/resource/script.js"></script>
 </body>
 </html>
