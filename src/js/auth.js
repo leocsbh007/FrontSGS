@@ -1,4 +1,5 @@
-const API_URL = "http://localhost:8000"; // Altere para a URL do seu backend
+const port = "8080"; // Ajustei pois por algum motivo o meu backendo não estava mais subindo na Porta 8000
+const API_URL = `http://localhost:${port}`; // Altere para a URL do seu backend
 
 document.getElementById("loginForm").addEventListener("submit", async function(event) {
     event.preventDefault();

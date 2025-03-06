@@ -1,16 +1,20 @@
+const port = "8080"; // Ajustei pois por algum motivo o meu backendo não estava mais subindo na Porta 8000
+const API_URL = `http://localhost:${port}`; // Altere para a URL do seu backend
+
 const modal = document.getElementById("userModal");
 const addUserBtn = document.getElementById("addUserBtn");
 const closeModal = document.querySelector(".close");
 const userform = document.getElementById("userForm");
 const tableBody = document.getElementById("userTable");
 
-let userIdToEdit = null; // Variável para armazenar o ID do usuário que será editado
+let userIdToEdit = null;
 
 function checkoutAuth() {
     const token = localStorage.getItem("apiToken");
     if (!token) {
+        console.log("Token expirado ou inválido. Redirecionando para login...");
         alert("Você precisa estar logado para acessar essa página!");
-        window.location.href = "login.html"; // Redireciona para login se não tiver token
+        window.location.href = "login.html"; 
     }
 }
 
@@ -28,7 +32,7 @@ document.getElementById("logout-btn").addEventListener("click", function() {
 function getUsers() {
     const token = localStorage.getItem("apiToken");    
 
-    axios.get("http://localhost:8000/users", {
+    axios.get(`${API_URL}/users`, {
         headers: { Authorization: `Bearer ${token}` }        
     })
     .then(response => {
@@ -52,7 +56,12 @@ function getUsers() {
 
     })
     .catch(error => {
+        if (error.response && error.response.status === 401) {
+            localStorage.removeItem("apiToken");
+            checkoutAuth();            
+        } else {
         console.error("Erro ao carregar usuários:", error);
+        }
     });
 }
 
@@ -87,11 +96,12 @@ userform.addEventListener("submit", function(event) {
 
     // Se estiver editando, fazer PUT
     if (userIdToEdit) {
-        axios.put(`http://localhost:8000/users/${userIdToEdit}`, userData, {
+        axios.put(`${API_URL}/users/${userIdToEdit}`, userData, {
             headers: { Authorization: `Bearer ${token}` }
         })
         .then(response => {
             console.log("Usuário atualizado:", response.data);
+            alert("Usuário atualizado");
             getUsers();
             modal.style.display = "none";
         })
@@ -101,11 +111,12 @@ userform.addEventListener("submit", function(event) {
         });
 
     } else { // Se não, fazer POST
-        axios.post("http://localhost:8000/users", userData, {
+        axios.post(`${API_URL}/users`, userData, {
             headers: { Authorization: `Bearer ${token}` }
         })
         .then(response => {
             console.log("Usuário adicionado:", response.data);
+            alert("Usuário adicionado");
             getUsers(); 
             modal.style.display = "none";
         })
@@ -131,11 +142,12 @@ function editUser(userId, currentUsername, currentEmail, currentRole) {
 function deleteUser(userId) {
     const token = localStorage.getItem("apiToken");
 
-    axios.delete(`http://localhost:8000/users/${userId}`, {
+    axios.delete(`${API_URL}/users/${userId}`, {
         headers: { Authorization: `Bearer ${token}` }
     })
     .then(response => {
         console.log("Usuário deletado:", response.data);
+        alert("Usuário deletado");
         getUsers(); 
     })
     .catch(error => {

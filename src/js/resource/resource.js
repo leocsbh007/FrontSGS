@@ -1,16 +1,20 @@
+const port = "8080"; // Ajustei pois por algum motivo o meu backendo não estava mais subindo na Porta 8000
+const API_URL = `http://localhost:${port}`; // Altere para a URL do seu backend
+
 const modal = document.getElementById("resourceModal");
 const addResourceBtn = document.getElementById("addResourceBtn");
 const closeModal = document.querySelector(".close");
-const form = document.getElementById("resourceForm");
+const resourceForm = document.getElementById("resourceForm");
 const tableBody = document.getElementById("resourceTableBody");
 
-let resourceIdToEdit = null; // Variável global para armazenar o ID do recurso que será editado
+let resourceIdToEdit = null;
 
 function checkoutAuth() {
     const token = localStorage.getItem("apiToken");
     if (!token) {
+        console.log("Token expirado ou invalido. Redirecionando para login...");
         alert("Você precisa estar logado para acessar essa página!");
-        window.location.href = "login.html"; // Redireciona para login se não tiver token
+        window.location.href = "login.html"; 
     }
 }
 
@@ -24,11 +28,10 @@ document.getElementById("logout-btn").addEventListener("click", function() {
     window.location.href = "login.html";
 });
 
-
 function loadResources() {    
     const token = localStorage.getItem("apiToken");  
     
-    axios.get("http://localhost:8000/resources", {
+    axios.get(`${API_URL}/resources`, {
         headers: { Authorization: `Bearer ${token}` }
     })
     .then(response => {
@@ -49,23 +52,36 @@ function loadResources() {
             tableBody.innerHTML += row;
         });
     })
-    .catch(error => console.error("Erro ao carregar recursos:", error));
+    .catch(error => {
+        if (error.response && error.response.status === 401){
+            localStorage.removeItem("apiToken");
+            checkoutAuth()
+        } else {
+            console.error("Erro ao carregar recursos:", error);
+        }
+    });
 }
 
 function deleteResource(id) {    
     const token = localStorage.getItem("apiToken");    
-    axios.delete(`http://localhost:8000/resources/${id}`, {
+    axios.delete(`${API_URL}/resources/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
     })
-    .then(() => loadResources())
-    .catch(error => console.error("Erro ao deletar recurso:", error));
+    .then(response => {
+        console.log("Recurso deletado:", response.data);
+        alert("Recurso deletado");
+        loadResources()})
+    .catch(error => {
+        console.error("Erro ao deletar recurso:", error);
+    });
 }
 
 // Função para abrir o modal e preencher com os dados do recurso para edição
 function editResource(id) {
     const token = localStorage.getItem("apiToken");
+    console.log("Editando")
     
-    axios.get(`http://localhost:8000/resources/${id}`, {
+    axios.get(`${API_URL}/resources/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
     })
     .then(response => {
@@ -77,34 +93,29 @@ function editResource(id) {
         document.getElementById('type').value = resource.type;
         document.getElementById('status').value = resource.status;
         document.getElementById('description').value = resource.description;
-
-        // Define o ID do recurso que será editado
-        resourceIdToEdit = resource.id;
         
-        // Exibe o modal
+        resourceIdToEdit = resource.id;
         modal.style.display = "flex";
     })
     .catch(error => {
-        console.error("Erro ao carregar os dados do recurso:", error);
+        console.error("Erro ao carregar os dados do recurso: ", error);
         alert("Erro ao carregar os dados do recurso.");
     });
 }
 
-// Enviar dados do formulário (criação ou edição de recurso)
-form.addEventListener("submit", function(event) {
+resourceForm.addEventListener("submit", function(event) {
     const token = localStorage.getItem("apiToken");
-    event.preventDefault();
-
+    event.preventDefault();    
     let resourceData = {
-        asset_number: form.asset_number.value.toUpperCase(),
-        name: form.name.value.toUpperCase(),
-        type: form.type.value,
-        description: form.description.value.toUpperCase(),
-        status: form.status.value
+        asset_number: resourceForm.asset_number.value.toUpperCase(),
+        name: resourceForm.name.value.toUpperCase(),
+        type: resourceForm.type.value,
+        description: resourceForm.description.value.toUpperCase(),
+        status: resourceForm.status.value
     };
 
     // Se o resourceIdToEdit estiver definido, estamos editando o recurso, caso contrário estamos criando
-    const url = resourceIdToEdit ? `http://localhost:8000/resources/${resourceIdToEdit}` : "http://localhost:8000/resources";
+    const url = resourceIdToEdit ? `${API_URL}/resources/${resourceIdToEdit}` : `${API_URL}/resources/`;
     const method = resourceIdToEdit ? "put" : "post"; // PUT para editar, POST para criar
 
     axios[method](url, resourceData, {
@@ -136,8 +147,8 @@ form.addEventListener("submit", function(event) {
 });
 
 addResourceBtn.addEventListener("click", () => {
-    // Limpar o formulário e garantir que estamos criando um novo recurso
-    form.reset();
+    // Limpar o formulário e garantir que estamos criando um novo recurso    
+    resourceForm.reset();
     resourceIdToEdit = null;
     modal.style.display = "flex";
 });
