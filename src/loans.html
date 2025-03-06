@@ -20,16 +20,57 @@
             </nav>
         </aside>
         <main class="content">
-            <div class="content">
-                <h1>Bem-vindo aos Emprestimos</h1>
-                <p>Conteúdo do loans.</p>
-            </div>
+            <header>                
+                <h1>Gerenciar Empréstimos</h1>
+                <button id="addLoanBtn">+ Adicionar Empréstimo</button>
+            </header>
+            
+            <section>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome Usuario (ID)</th>
+                            <th>Nome Recurso (ID)</th>
+                            <th>Status</th>
+                            <th>Data Empréstimo</th>
+                            <th>Data Devolução</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="loanTable">
+                        <!-- Dados dos usuários serão inseridos aqui -->
+                    </tbody>
+                </table>
+            </section>
         </main>
-    </div>
 
-    
+        <!-- Modal de Adicionar/Editar Usuário -->
+        <div id="loanModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 id="modalTitle">Adicionar Empréstimo</h2>
+                <form id="loanForm">
+                    <label for="name">Nome de Usuário (ID):</label>
+                    <input type="text" id="name" required>
+
+                    <label for="resource">Nome do Recurso (ID):</label>
+                    <input type="text" id="resource" required>
+
+                    <label for="status">Status:</label>
+                    <select id="status" required>
+                        <option value="ATIVO">DISPONIVEL PARA EMPRÉSTIMO</option>
+                        <option value="FINALIZADO">DEVOLVIDO</option>
+                        <option value="ATRASADO">ATRASADO</option>                        
+                    </select>
+
+                    <button type="submit">Salvar</button>
+                </form>
+            </div>
+        </div>
+    </div>        
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/loan/loan.js"></script>
 </body>
 </html>
